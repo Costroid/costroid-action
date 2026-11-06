@@ -1,10 +1,10 @@
 # Costroid cost check
 
-Costroid is the cost check for pull requests. It reads what a coding agent's run cost, or runs the agent under a budget, records the cost per token class as FOCUS rows and posts the figure on the pull request. This action is `Costroid/costroid/action` at the commit of `v1.0.0-alpha.6`, with the same inputs.
+Costroid is the cost check for pull requests. It reads what a coding agent's run cost, or runs the agent under a budget, records the cost per token class as FOCUS rows and posts the figure on the pull request. This action is `Costroid/costroid/action` at the commit of `v1.0.0-alpha.7`, with the same inputs.
 
 ## Use it with claude-code-action
 
-Save [the claude-code-action recipe at `v1.0.0-alpha.6`](https://github.com/Costroid/costroid/blob/v1.0.0-alpha.6/recipes/github-claude-code-action.yml) as `.github/workflows/costroid.yml`. It keeps your `claude-code-action` step and calls Costroid's action in three jobs. Point those three steps at this repository, pinned to the full commit SHA of its `v1.0.0-alpha.6` tag:
+Save [the claude-code-action recipe at `v1.0.0-alpha.7`](https://github.com/Costroid/costroid/blob/v1.0.0-alpha.7/recipes/github-claude-code-action.yml) as `.github/workflows/costroid.yml`. It keeps your `claude-code-action` step and calls Costroid's action in three jobs. Point those three steps at this repository, pinned to the full commit SHA of its `v1.0.0-alpha.7` tag:
 
 ```yaml
 jobs:
@@ -13,7 +13,7 @@ jobs:
       # The recipe's checkout, Claude Code install and claude-code-action step come first.
       - name: Read what the run cost
         if: always() && steps.claude.outputs.execution_file != ''
-        uses: Costroid/costroid-action@<commit> # v1.0.0-alpha.6
+        uses: Costroid/costroid-action@<commit> # v1.0.0-alpha.7
         with:
           stage: read
           minimum-agent-version: 2.1.316
@@ -23,7 +23,7 @@ jobs:
 
   ingest:
     steps:
-      - uses: Costroid/costroid-action@<commit> # v1.0.0-alpha.6
+      - uses: Costroid/costroid-action@<commit> # v1.0.0-alpha.7
         with:
           stage: ingest
           ingest-url: ${{ vars.COSTROID_INGEST_URL }}
@@ -31,7 +31,7 @@ jobs:
 
   report:
     steps:
-      - uses: Costroid/costroid-action@<commit> # v1.0.0-alpha.6
+      - uses: Costroid/costroid-action@<commit> # v1.0.0-alpha.7
         with:
           stage: report
 ```
