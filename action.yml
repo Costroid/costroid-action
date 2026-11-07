@@ -14,8 +14,9 @@ inputs:
       way. ingest sends those rows to a ledger. report posts the check and the comment. all does
       run and report in one job, which gives the agent's job the report's permissions, so the
       recipes never use it. install installs costroid and does nothing else, so a later step
-      can run it, as the fork follow-up recipe does.
-    default: all
+      can run it, as the fork follow-up recipe does. It has no default, and an empty stage
+      fails the step with the list of stages.
+    required: true
   version:
     description: >-
       The costroid release to install, without the leading v. Leave it and sha256 empty to
@@ -35,6 +36,12 @@ inputs:
     default: ""
   minimum-agent-version:
     description: The lowest agent version this run accepts.
+    default: ""
+  agent-version:
+    description: >-
+      For stage run, the agent version to install when the agent is not on the runner. Empty
+      installs the version this release's recipes install. An agent already on the runner is
+      used as it is, held to minimum-agent-version.
     default: ""
   budget-usd:
     description: The run's budget in USD.
@@ -59,6 +66,12 @@ inputs:
   github-token:
     description: The token that posts the check and the comment.
     default: ${{ github.token }}
+  agent-result:
+    description: >-
+      For stage report, the result of the agent's job, as needs.<job>.result gives it. skipped
+      makes the report say the agent did not run on the pull request, in place of a report
+      with no rows. Empty tells the report nothing.
+    default: ""
   ingest-url:
     description: The ledger's rows endpoint.
     default: ""
@@ -116,7 +129,7 @@ runs:
   using: composite
   steps:
     - id: costroid
-      uses: Costroid/costroid/action@fccfbd6a9eab4d012f4715c050f527050454a818 # v1.0.0-alpha.8
+      uses: Costroid/costroid/action@a4db648a1ad602760e88277f4875b55d08ea73ef # v1.0.0-alpha.9
       with:
         stage: ${{ inputs.stage }}
         version: ${{ inputs.version }}
@@ -125,6 +138,7 @@ runs:
         prompt: ${{ inputs.prompt }}
         agent-args: ${{ inputs.agent-args }}
         minimum-agent-version: ${{ inputs.minimum-agent-version }}
+        agent-version: ${{ inputs.agent-version }}
         budget-usd: ${{ inputs.budget-usd }}
         execution-file: ${{ inputs.execution-file }}
         show-output: ${{ inputs.show-output }}
@@ -132,5 +146,6 @@ runs:
         billing-account: ${{ inputs.billing-account }}
         credential: ${{ inputs.credential }}
         github-token: ${{ inputs.github-token }}
+        agent-result: ${{ inputs.agent-result }}
         ingest-url: ${{ inputs.ingest-url }}
         ingest-audience: ${{ inputs.ingest-audience }}
