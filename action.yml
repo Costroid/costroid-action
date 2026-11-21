@@ -3,8 +3,8 @@ description: Run a coding agent under a budget, record what it cost and report i
 author: Costroid
 
 branding:
-  icon: dollar-sign
-  color: green
+  icon: circle
+  color: orange
 
 inputs:
   stage:
@@ -188,7 +188,7 @@ runs:
   using: composite
   steps:
     - id: costroid
-      uses: Costroid/costroid/action@2ffcd3f6878b0e6ba6753b2fb9acaed3f97b4ff9 # v1.0.0-alpha.25
+      uses: Costroid/costroid/action@18bac6f9753f2c19941e17e0429571274cf0a21a # v1.0.0-alpha.26
       with:
         stage: ${{ inputs.stage }}
         version: ${{ inputs.version }}
