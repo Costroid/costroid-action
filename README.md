@@ -1,8 +1,8 @@
 # Costroid cost check
 
-Costroid is the cost check for pull requests. It runs a coding agent under a budget, or reads what a `claude-code-action` run cost, records the cost per token class as FOCUS rows, and posts the figure on the pull request. This action is `Costroid/costroid/action` at the commit of `v1.0.0-alpha.34`, with the same inputs and outputs.
+Costroid is the cost check for pull requests. It runs a coding agent under a budget, or reads what a `claude-code-action` run cost, records the cost per token class as FOCUS rows, and posts the figure on the pull request. This action is `Costroid/costroid/action` at the commit of `v1.0.0-alpha.35`, with the same inputs and outputs.
 
-Newest release: [`v1.0.0-alpha.34`](https://github.com/Costroid/costroid/releases/tag/v1.0.0-alpha.34), at Costroid commit `e323c83959bedbdd9e3ad48db50babd8677715f4`. The Marketplace's version menu can name an older release until this one is published there. [The commit to pin](#the-commit-to-pin) says which commit runs this one.
+Newest release: [`v1.0.0-alpha.35`](https://github.com/Costroid/costroid/releases/tag/v1.0.0-alpha.35), at Costroid commit `b1591eb8f1621559a6b46ab87699c9247a8969d7`. The Marketplace's version menu can name an older release until this one is published there. [The commit to pin](#the-commit-to-pin) says which commit runs this one.
 
 ## What a pull request gets
 
@@ -10,11 +10,11 @@ Each pull request gets one check, `costroid`, and one comment. The comment's fir
 
 > Within budget, by the job's own figures: this run cost USD 0.0391529 at list (Measured) of the USD 5.00 run budget. Nothing outside the job checked the figures, so the check is neutral.
 
-The figure equals the `total_cost_usd` the run itself reported. [The recording's notes](https://github.com/Costroid/costroid/blob/v1.0.0-alpha.34/cmd/costroid/demo/README.md) say how its rows were read, and [the whole comment](https://github.com/Costroid/costroid/blob/v1.0.0-alpha.34/docs/comment-example.md) is what Costroid renders from them. `costroid demo` prints it.
+The figure equals the `total_cost_usd` the run itself reported. [The recording's notes](https://github.com/Costroid/costroid/blob/v1.0.0-alpha.35/cmd/costroid/demo/README.md) say how its rows were read, and [the whole comment](https://github.com/Costroid/costroid/blob/v1.0.0-alpha.35/docs/comment-example.md) is what Costroid renders from them. `costroid demo` prints it.
 
 ## Outputs
 
-The `report` stage sets `cost`, `currency`, `cost_basis`, `enforcement_grade`, `conclusion`, `check_run_id`, `catalog_version`, the token counts `tokens_input_uncached`, `tokens_cache_read`, `tokens_cache_write` and `tokens_output`, and `result`, the whole result as one line of JSON. [docs/agents.md](https://github.com/Costroid/costroid/blob/v1.0.0-alpha.34/docs/agents.md) describes the result.
+The `report` stage sets `cost`, `currency`, `cost_basis`, `enforcement_grade`, `conclusion`, `check_run_id`, `catalog_version`, the token counts `tokens_input_uncached`, `tokens_cache_read`, `tokens_cache_write` and `tokens_output`, and `result`, the whole result as one line of JSON. [docs/agents.md](https://github.com/Costroid/costroid/blob/v1.0.0-alpha.35/docs/agents.md) describes the result.
 
 ## Run Claude Code under a budget
 
@@ -22,9 +22,9 @@ The `report` stage sets `cost`, `currency`, `cost_basis`, `enforcement_grade`, `
 2. Copy the workflow below to `.github/workflows/costroid.yml`, on a new branch.
 3. Open a pull request.
 
-Each push to the pull request runs the agent again, with a budget of USD 5 for each run. [The Codex recipe](https://github.com/Costroid/costroid/blob/v1.0.0-alpha.34/recipes/github-codex.yml) runs Codex the same way.
+Each push to the pull request runs the agent again, with a budget of USD 5 for each run. [The Codex recipe](https://github.com/Costroid/costroid/blob/v1.0.0-alpha.35/recipes/github-codex.yml) runs Codex the same way.
 
-From the root of your repository, `costroid init github --agent claude` writes this workflow to `.github/workflows/costroid.yml`, once [`costroid` is installed](https://github.com/Costroid/costroid/blob/v1.0.0-alpha.34/docs/install.md). Pasted as it stands, it runs as well:
+From the root of your repository, `costroid init github --agent claude` writes this workflow to `.github/workflows/costroid.yml`, once [`costroid` is installed](https://github.com/Costroid/costroid/blob/v1.0.0-alpha.35/docs/install.md). Pasted as it stands, it runs as well:
 
 ```yaml
 # Runs Claude Code on a pull request under a budget, then reports what it cost.
@@ -81,7 +81,7 @@ jobs:
           HEAD: ${{ github.event.pull_request.head.sha }}
         run: git diff "$BASE...$HEAD" > pull-request.diff
       - name: Run Claude Code under the budget
-        uses: Costroid/costroid/action@e323c83959bedbdd9e3ad48db50babd8677715f4 # v1.0.0-alpha.34
+        uses: Costroid/costroid/action@b1591eb8f1621559a6b46ab87699c9247a8969d7 # v1.0.0-alpha.35
         env:
           OTEL_LOG_USER_PROMPTS: "0"
           OTEL_LOG_ASSISTANT_RESPONSES: "0"
@@ -132,7 +132,7 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - uses: Costroid/costroid/action@e323c83959bedbdd9e3ad48db50babd8677715f4 # v1.0.0-alpha.34
+      - uses: Costroid/costroid/action@b1591eb8f1621559a6b46ab87699c9247a8969d7 # v1.0.0-alpha.35
         with:
           stage: ingest
           ingest-url: ${{ vars.COSTROID_INGEST_URL }}
@@ -154,7 +154,7 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-      - uses: Costroid/costroid/action@e323c83959bedbdd9e3ad48db50babd8677715f4 # v1.0.0-alpha.34
+      - uses: Costroid/costroid/action@b1591eb8f1621559a6b46ab87699c9247a8969d7 # v1.0.0-alpha.35
         with:
           stage: report
           # A skipped agent job then reads as skipped, not as a run with no rows.
@@ -168,7 +168,7 @@ Add two blocks to the workflow you have. `costroid init github --agent claude-co
 ```yaml
 - name: Read what the run cost
   if: always() && steps.claude.outputs.execution_file != ''
-  uses: Costroid/costroid/action@e323c83959bedbdd9e3ad48db50babd8677715f4 # v1.0.0-alpha.34
+  uses: Costroid/costroid/action@b1591eb8f1621559a6b46ab87699c9247a8969d7 # v1.0.0-alpha.35
   with:
     stage: read
     execution-file: ${{ steps.claude.outputs.execution_file }}
@@ -188,22 +188,22 @@ report:
     contents: read
     pull-requests: write
   steps:
-    - uses: Costroid/costroid/action@e323c83959bedbdd9e3ad48db50babd8677715f4 # v1.0.0-alpha.34
+    - uses: Costroid/costroid/action@b1591eb8f1621559a6b46ab87699c9247a8969d7 # v1.0.0-alpha.35
       with:
         stage: report
         agent-result: ${{ needs.review.result }}
 ```
 
-Your step keeps its prompt and its review, and no new secret is needed. Costroid did not start the run. When your step's `claude_args` holds `--max-budget-usd` and the read step is given the same figure, the comment's grade reads `agent-flag`; otherwise it reads `none`. [docs/existing-workflow.md](https://github.com/Costroid/costroid/blob/v1.0.0-alpha.34/docs/existing-workflow.md) shows a whole workflow with both blocks.
+Your step keeps its prompt and its review, and no new secret is needed. Costroid did not start the run. When your step's `claude_args` holds `--max-budget-usd` and the read step is given the same figure, the comment's grade reads `agent-flag`; otherwise it reads `none`. [docs/existing-workflow.md](https://github.com/Costroid/costroid/blob/v1.0.0-alpha.35/docs/existing-workflow.md) shows a whole workflow with both blocks.
 
 ## The commit to pin
 
-The workflows above call `Costroid/costroid/action` at `e323c83959bedbdd9e3ad48db50babd8677715f4`, the commit of Costroid's `v1.0.0-alpha.34`. The action installs only the release its own commit belongs to, and checks it by its signature, so it needs no version, no checksum and no account.
+The workflows above call `Costroid/costroid/action` at `b1591eb8f1621559a6b46ab87699c9247a8969d7`, the commit of Costroid's `v1.0.0-alpha.35`. The action installs only the release its own commit belongs to, and checks it by its signature, so it needs no version, no checksum and no account.
 
-To call this listing's action, `Costroid/costroid-action`, in their place, pin it to the full commit of this listing's tag `v1.0.0-alpha.34`, not to Costroid's. [The tag's release notes](https://github.com/Costroid/costroid-action/releases/tag/v1.0.0-alpha.34) name that commit and show a step that calls it. This command prints it too, as the first field of its one line:
+To call this listing's action, `Costroid/costroid-action`, in their place, pin it to the full commit of this listing's tag `v1.0.0-alpha.35`, not to Costroid's. [The tag's release notes](https://github.com/Costroid/costroid-action/releases/tag/v1.0.0-alpha.35) name that commit and show a step that calls it. This command prints it too, as the first field of its one line:
 
 ```sh
-git ls-remote https://github.com/Costroid/costroid-action 'refs/tags/v1.0.0-alpha.34^{}'
+git ls-remote https://github.com/Costroid/costroid-action 'refs/tags/v1.0.0-alpha.35^{}'
 ```
 
 ## Everything else
